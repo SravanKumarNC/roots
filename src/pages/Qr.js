@@ -1,14 +1,28 @@
 import React, { useRef, useEffect, useState } from "react";
 import jsQR from "jsqr";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import TasksService from "../services/TasksService";
+import sendData from "../services/WebSockets";
 
 const Qr = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [selectedArea, setSelectedArea] = useState(null);
   const [detectedQRCode, setDetectedQRCode] = useState(null);
-  const [task, setTask] = useState(null);
+  const [mediaStream, setMediaStream] = useState(null);
+  // const [task, setTask] = useState(null);
+
+  const { task } = useParams();
+  console.log(task);
+  const [data, setData] = useState({
+    tasks: "",
+    binLocation: "",
+    status: "",
+    assignee: "",
+  });
+  const workStatus = "on Going";
+  const Assignee = "driver 1";
 
   const navigate = useNavigate();
 
@@ -26,8 +40,8 @@ const Qr = () => {
 
     const scanQRCode = () => {
       if (!isScanning) return;
-      canvas.width = 1080;
-      canvas.height = 580;
+      canvas.width = 800;
+      canvas.height = 600;
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       if (selectedArea) {
@@ -61,6 +75,10 @@ const Qr = () => {
             setDetectedQRCode(code.data);
             console.log(code.data);
             isScanning = false;
+            if (mediaStream) {
+              mediaStream.getTracks().forEach((track) => track.stop());
+              setMediaStream(null);
+            }
           } else {
             setDetectedQRCode(null);
           }
@@ -75,42 +93,89 @@ const Qr = () => {
     };
 
     navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: "user" } })
+      .getUserMedia({
+        video: {
+          facingMode: "user",
+          width: { ideal: 800 },
+          height: { ideal: 800 },
+        },
+      })
       .then((stream) => {
+        setMediaStream(stream);
         video.srcObject = stream;
-        video.play();
+        video.play().catch((err) => {
+          console.error("Error playing video:", err);
+        });
       })
       .catch((err) => console.error("Error accessing the camera:", err));
 
-    video.addEventListener("play", () => {
-      canvas.width = 1080;
-      canvas.height = 580;
-      requestAnimationFrame(scanQRCode);
+    video.addEventListener("loadedmetadata", () => {
+      scanQRCode();
     });
 
     return () => {
       isScanning = false;
+      if (mediaStream) {
+        mediaStream.getTracks().forEach((track) => track.stop());
+        setMediaStream(null);
+      }
     };
   }, [selectedArea]);
 
-  const handlePick = () => {
-    setTask("Pick");
-    toast.success("Task : Pick Up");
-  };
+  // const handlePick = () => {
+  //   setTask("Pick");
+  //   toast.success("Task : Pick Up");
+  // };
 
-  const handleDrop = () => {
-    setTask("Drop");
-    toast.success("Task : Drop");
-  };
+  // const handleDrop = () => {
+  //   setTask("Drop");
+  //   toast.success("Task : Drop");
+  // };
 
-  const handleAssign = () => {
+  const handleAssign = async () => {
     if (task !== null) {
-      navigate("/home");
-      toast.success("Task Assigned");
+      setData({
+        ...data,
+        tasks: task,
+        binLocation: detectedQRCode,
+        status: workStatus,
+        assignee: Assignee,
+        timestamp: new Date(),
+      });
+      if (mediaStream) {
+        mediaStream.getTracks().forEach((track) => track.stop());
+        setMediaStream(null);
+      }
+      // console.log(data);
+      // navigate("/home");
+      // toast.success("Task Assigned");
     } else {
-      toast.success("Task : Pick Up");
+      toast.error("Select Pick or Drop");
+    }
+    const dataToSend = detectedQRCode + "," + task;
+    sendData(dataToSend);
+    if (mediaStream) {
+      mediaStream.getTracks().forEach((track) => track.stop());
     }
   };
+  // const handleResacan = () => {
+  //   navigate("/scan");
+  // };
+
+  useEffect(() => {
+    if (data.tasks && data.binLocation) {
+      TasksService.addTask(data)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      navigate("/scan");
+      toast.success("Task Assigned");
+    }
+    console.log(data);
+  }, [data, navigate]);
 
   return (
     <div className="flex flex-col justify-center items-center h-screen m-auto">
@@ -136,27 +201,39 @@ const Qr = () => {
 
       {detectedQRCode && (
         <div className="flex items-center justify-center w-full min-h-screen">
-          <div className="w-[30%] h-[25%] bg-slate-200 space-y-6 rounded-lg">
-            <div className="flex justify-center font-bold text-3xl">
+          <div className="w-[30%] h-[25%]   space-y-6 rounded-lg">
+            <div className="flex justify-center font-bold text-3x bg-gray-200 py-4 rounded-md">
               Detected QR : {detectedQRCode}
             </div>
-            <div className="flex justify-center space-x-4 font-bold ">
+            <div className="flex justify-center space-x-2 font-bold ">
               <button
-                className="bg-orange-300 px-4 py-2 rounded-md"
-                onClick={handlePick}
+                className={`bg-orange-400 ${
+                  task === "Pick" ? "border-2 border-blue-400" : ""
+                } px-4 py-2 rounded-md hover:bg-orange-300`}
+                // onClick={handlePick}
               >
-                Pick up
+                Picking
               </button>
               <button
-                className="bg-orange-300 px-4 py-2 rounded-md"
-                onClick={handleDrop}
+                className={`bg-orange-400 ${
+                  task === "Drop" ? "border-2 border-blue-400" : ""
+                } px-4 py-2 rounded-md hover:bg-orange-300`}
+                // onClick={handleDrop}
               >
-                Drop
+                put away
               </button>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-center space-x-8  items-center mr-4">
               <button
-                className="bg-green-400 font-bold text-xl px-6 py-2 rounded-md"
+                className="bg-green-400 font-bold text-xl px-6 py-2 rounded-md hover:bg-green-300"
+                onClick={() => {
+                  navigate("/scan");
+                }}
+              >
+                Re-Scan
+              </button>
+              <button
+                className="bg-green-400 font-bold text-xl px-6 py-2 rounded-md hover:bg-green-300"
                 onClick={handleAssign}
               >
                 Assign

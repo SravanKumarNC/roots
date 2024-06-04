@@ -1,8 +1,7 @@
 import React from "react";
+import LogsData from "./LogsData";
 
-import TableData from "./TableData";
-
-const Table = ({ headings, data }) => {
+const LogTable = ({ headings, data }) => {
   return (
     <div className="flex w-full ml-[4%] shadow-2xl border-b mt-2 rounded-md overflow-x-auto max-h-[85vh] animate-fade-up">
       <table className="min-w-full">
@@ -15,7 +14,7 @@ const Table = ({ headings, data }) => {
         </thead>
         <tbody className="bg-white dark:bg-lightBg transition duration-1000 ">
           {data?.map((task, index) => (
-            <TableData data={task} key={index} index={index} />
+            <LogsData data={task} key={index} index={index} />
           ))}
         </tbody>
       </table>
@@ -23,4 +22,4 @@ const Table = ({ headings, data }) => {
   );
 };
 
-export default Table;
+export default LogTable;
