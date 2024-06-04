@@ -10,8 +10,6 @@ const Qr = () => {
   const canvasRef = useRef(null);
   const [selectedArea, setSelectedArea] = useState(null);
   const [detectedQRCode, setDetectedQRCode] = useState(null);
-  const [mediaStream, setMediaStream] = useState(null);
-  // const [task, setTask] = useState(null);
 
   const { task } = useParams();
   console.log(task);
@@ -75,10 +73,6 @@ const Qr = () => {
             setDetectedQRCode(code.data);
             console.log(code.data);
             isScanning = false;
-            if (mediaStream) {
-              mediaStream.getTracks().forEach((track) => track.stop());
-              setMediaStream(null);
-            }
           } else {
             setDetectedQRCode(null);
           }
@@ -101,7 +95,6 @@ const Qr = () => {
         },
       })
       .then((stream) => {
-        setMediaStream(stream);
         video.srcObject = stream;
         video.play().catch((err) => {
           console.error("Error playing video:", err);
@@ -115,22 +108,8 @@ const Qr = () => {
 
     return () => {
       isScanning = false;
-      if (mediaStream) {
-        mediaStream.getTracks().forEach((track) => track.stop());
-        setMediaStream(null);
-      }
     };
   }, [selectedArea]);
-
-  // const handlePick = () => {
-  //   setTask("Pick");
-  //   toast.success("Task : Pick Up");
-  // };
-
-  // const handleDrop = () => {
-  //   setTask("Drop");
-  //   toast.success("Task : Drop");
-  // };
 
   const handleAssign = async () => {
     if (task !== null) {
@@ -142,25 +121,12 @@ const Qr = () => {
         assignee: Assignee,
         timestamp: new Date(),
       });
-      if (mediaStream) {
-        mediaStream.getTracks().forEach((track) => track.stop());
-        setMediaStream(null);
-      }
-      // console.log(data);
-      // navigate("/home");
-      // toast.success("Task Assigned");
     } else {
       toast.error("Select Pick or Drop");
     }
     const dataToSend = detectedQRCode + "," + task;
     sendData(dataToSend);
-    if (mediaStream) {
-      mediaStream.getTracks().forEach((track) => track.stop());
-    }
   };
-  // const handleResacan = () => {
-  //   navigate("/scan");
-  // };
 
   useEffect(() => {
     if (data.tasks && data.binLocation) {
@@ -210,7 +176,6 @@ const Qr = () => {
                 className={`bg-orange-400 ${
                   task === "Pick" ? "border-2 border-blue-400" : ""
                 } px-4 py-2 rounded-md hover:bg-orange-300`}
-                // onClick={handlePick}
               >
                 Picking
               </button>
@@ -218,7 +183,6 @@ const Qr = () => {
                 className={`bg-orange-400 ${
                   task === "Drop" ? "border-2 border-blue-400" : ""
                 } px-4 py-2 rounded-md hover:bg-orange-300`}
-                // onClick={handleDrop}
               >
                 put away
               </button>
@@ -240,11 +204,6 @@ const Qr = () => {
               </button>
             </div>
           </div>
-          {/* <button
-          className="bg-green-500 rounded-md"
-          // onClick={handleRescan}
-        ></button>
-        <div className="detected-qr">Detected QR code: {detectedQRCode}</div> */}
         </div>
       )}
     </div>
