@@ -89,7 +89,7 @@ const Qr = () => {
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          facingMode: "user",
+          facingMode: "environment",
           width: { ideal: 800 },
           height: { ideal: 800 },
         },
@@ -108,7 +108,7 @@ const Qr = () => {
 
     return () => {
       isScanning = false;
-    };
+    }; 
   }, [selectedArea]);
 
   const handleAssign = async () => {

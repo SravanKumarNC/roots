@@ -3,8 +3,9 @@ import React from "react";
 import TableData from "./TableData";
 
 const Table = ({ headings, data }) => {
+  // console.log(pageNumber)
   return (
-    <div className="flex w-full ml-[4%] shadow-2xl border-b mt-2 rounded-md overflow-x-auto max-h-[85vh] animate-fade-up">
+    <div className="flex w-full ml-[4%] shadow-xl border border-t-0 mt-2 rounded-md max-h-[85vh] animate-fade-up">
       <table className="min-w-full">
         <thead>
           {headings?.map((heading) => (
@@ -15,7 +16,7 @@ const Table = ({ headings, data }) => {
         </thead>
         <tbody className="bg-white dark:bg-lightBg transition duration-1000 ">
           {data?.map((task, index) => (
-            <TableData data={task} key={index} index={index} />
+            <TableData data={task} key={index} index={index}/>
           ))}
         </tbody>
       </table>

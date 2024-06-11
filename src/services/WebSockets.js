@@ -7,8 +7,21 @@ const sendData = (message) => {
     ws.send(message);
   };
   ws.onmessage = (event) => {
+    // if (event.data instanceof Blob) {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     const receivedData = JSON.parse(reader.result);
+    //     toast.success(receivedData.message);
+    //     console.log(receivedData);
+    //     ws.close();
+    //   };
+    //   reader.readAsText(event.data);
+    // } else {
+    // const receivedData = JSON.parse(event.data);
     toast.success(event.data);
-    ws.close();
+    console.log(event.data);
+    // ws.close();
+    // }
   };
   ws.onerror = (error) => {
     console.log("Websocket error:", error);

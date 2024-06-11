@@ -1,10 +1,16 @@
 import axios from "axios";
 
-const TASKS_SERVICE_BASE_URL = "http://localhost:4000/api/tasks";
+const TASKS_SERVICE_BASE_URL =
+  "https://roots-backend-4f5g.onrender.com/api/tasks";
 
 class TasksService {
   getTasks = () => {
     return axios.get(TASKS_SERVICE_BASE_URL);
+  };
+  getPaginatedData = (pageNumber) => {
+    return axios.get(
+      TASKS_SERVICE_BASE_URL + `/paginatedData?page=${pageNumber}`
+    );
   };
   addTask = (task) => {
     return axios.post(TASKS_SERVICE_BASE_URL, task);
