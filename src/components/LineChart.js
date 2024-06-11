@@ -2,7 +2,8 @@ import React from "react";
 import ReactEcharts from "echarts-for-react";
 
 const LineChart = ({ dailyData }) => {
-  const renderedData = dailyData.map((a) => a/2).reverse()
+  const renderedData = dailyData.map((a) => a).reverse()
+  
   const options = {
     xAxis: {
       type: "category",
