@@ -16,13 +16,13 @@ const Navbar = () => {
       <div className="flex-1 p-2">
         <div className="border-b-2">
           <Link to={""}>
-            <div className="hover:cursor-pointer hover:text-slate-400 flex items-center justify-center">
+            <div className="hover:cursor-pointer px-4 hover:text-slate-400 flex items-center justify-center">
               <img src={logo} alt="Logo" className={"w-[100%] h-22"} />
             </div>
           </Link>
         </div>
 
-        <div className="my-6 xl:ml-3 mr-3 md:ml-2 sm:ml-1 font-semibold">
+        <div className=" my-6 mr-3 font-semibold">
           <Link to={"/dashboard"}>
             <div className="xl:flex text-black items-center  hover:cursor-pointer dark:hover:bg-gray-300 hover:border-2 hover border-blue-400 rounded-md">
               <MdOutlineDashboard className="h-7 w-7 m-3" />
@@ -49,15 +49,15 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      <div className="mb-3 flex items-center  justify-center">
+      <div className="mb-3 flex items-center px-4  justify-between">
         <div>
           <img src={rootsLogo} alt="Logo" className={"w-[100%] h-20"} />
         </div>
         <Link to={"/"}>
           <button
-            className={`hover:bg-gray-300  text-red-600 py-2 px-2 rounded-md `}
+            className={`hover:bg-gray-300  text-red-600 rounded-md `}
           >
-            <BiLogOut className="" />
+            <BiLogOut className="h-7 w-7  m-3 " />
           </button>
         </Link>
         {/* <button
