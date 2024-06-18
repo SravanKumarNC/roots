@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import TasksService from "../services/TasksService";
 import sendData from "../services/WebSockets";
+import sendData1 from "../services/websocketsTesting";
 
 const Qr = () => {
   const videoRef = useRef(null);
@@ -125,7 +126,8 @@ const Qr = () => {
       toast.error("Select Pick or Drop");
     }
     const dataToSend = detectedQRCode + "," + task;
-    sendData(dataToSend);
+    // sendData(dataToSend);
+    sendData1(dataToSend);
   };
 
   useEffect(() => {

@@ -1,6 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "tailwindcss/tailwind.css";
+
+@media only screen and (orientation: portrait) {
+  body {
+    transform: rotate(90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+  }
+}
+@media only screen and (orientation: landscape) {
+  body {
+    transform: none;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 0em;
 }

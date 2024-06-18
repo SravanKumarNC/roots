@@ -56,7 +56,7 @@ const Dashboard = () => {
     });
 
     setDailyCounts(dailyCountsCopy);
-  // eslint-disable-next-line
+  
   }, [data]);
   return (
     <div className="h-screen p-4">

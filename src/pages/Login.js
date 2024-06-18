@@ -2,14 +2,30 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import logo from "../utils/logo.png";
 import { useNavigate } from "react-router-dom";
+import "../index.css";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const openFullScreen = () => {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.mozRequestFullscreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullScreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    }
+  };
+
   const handleClick = () => {
+    openFullScreen();
     navigate("/dashboard");
   };
+
   return (
-    <div className="h-screen flex justify-center items-center bg-orange-50">
+    <div className="h-screen w-screen flex justify-center items-center bg-orange-50">
       <div className="bg-white w-[30%] h-[75%] rounded-3xl shadow-2xl space-y-6">
         <div className="h-full flex justify-center items-center">
           <div className="w-[70%] space-y-2">
@@ -36,7 +52,7 @@ const Login = () => {
             </div>
             <div>
               <button
-                className="w-[100%] bg-orange-400 p-2 px-4 rounded-md font-semibold hover:bg-orange-500"
+                className="w-[100%] bg-orange-500 p-2 px-4 rounded-md font-semibold hover:bg-orange-400"
                 onClick={handleClick}
               >
                 Login
