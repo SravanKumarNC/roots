@@ -7,7 +7,7 @@ import sendData1 from "../services/websocketsTesting";
 const SystemLogs = () => {
   const message = "update";
 
-  // sendData1(message);
+  sendData1(message);
 
   const logsHeadings = ["ID", "Error Message", "Timestamp"];
   // console.log(dummy);

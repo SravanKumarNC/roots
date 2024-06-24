@@ -39,6 +39,13 @@ const QrScan = () => {
       console.warn(error);
     };
     scanner.render(success, error);
+
+    // cleanup function to stop scanning and release the cemera
+    return () => {
+      scanner.clear().catch((error) => {
+        console.log("Failed to clear scanner:", error);
+      });
+    };
   }, []);
   const handleAssign = async () => {
     if (task !== null) {
