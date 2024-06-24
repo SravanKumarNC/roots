@@ -9,6 +9,7 @@ import Tasks from "./pages/Tasks";
 import Records from "./pages/Records";
 import SystemLogs from "./pages/SystemLogs";
 import Dashboard from "./pages/Dashboard";
+import QrScan from "./pages/QrScan";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route index={true} element={<Login />}></Route>
         <Route path="/" element={<Layout />}>
           <Route path="/scan" element={<Home />}></Route>
+          <Route path="/scan1/:task" element={<QrScan />}></Route>
           <Route path="/qr/:task" element={<Qr />}></Route>
           <Route path="/tasks" element={<Tasks />}></Route>
           <Route path="/records" element={<Records />}></Route>

@@ -109,7 +109,7 @@ const Qr = () => {
 
     return () => {
       isScanning = false;
-    }; 
+    };
   }, [selectedArea]);
 
   const handleAssign = async () => {

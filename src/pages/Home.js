@@ -17,11 +17,12 @@ const Home = () => {
   };
   const handleClick = () => {
     if (task) {
-      navigate(`/qr/${task}`);
-    }else{
-      toast.warn("select task",{
-        className: "toast-message"
-      })
+      // navigate(`/qr/${task}`);
+      navigate(`/scan1/${task}`);
+    } else {
+      toast.warn("select task", {
+        className: "toast-message",
+      });
     }
   };
 

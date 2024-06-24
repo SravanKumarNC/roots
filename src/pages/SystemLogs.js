@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { dummy } from "../utils/ErrorMessageDummyData";
 import LogTable from "../components/LogTable";
+import { toast } from "react-toastify";
+import sendData1 from "../services/websocketsTesting";
 
 const SystemLogs = () => {
+  const message = "update";
+
+  sendData1(message);
+
   const logsHeadings = ["ID", "Error Message", "Timestamp"];
-  console.log(dummy);
+  // console.log(dummy);
   return (
     <div>
       <div>

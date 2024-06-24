@@ -11,7 +11,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 const Navbar = () => {
   return (
     <div
-      className={`bg-gray-100 flex flex-col bg-slate-00 text-slate-900 dark:text-white min-h-screen transition duration-1000 top-0 left-0 w-[20%] `}
+      className={`bg-gray-100 flex flex-col bg-slate-00 text-slate-900 dark:text-white min-h-[80%] transition duration-1000 top-0 left-0 w-[20%] `}
     >
       <div className="flex-1 p-2">
         <div className="border-b-2">

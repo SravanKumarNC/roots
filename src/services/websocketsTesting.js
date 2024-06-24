@@ -11,7 +11,7 @@ const sendData1 = (message) => {
       const reader = new FileReader();
       reader.onload = () => {
         const receivedData = JSON.parse(reader.result);
-        toast.success(receivedData.message);
+        // toast.success(receivedData.message);
         console.log(receivedData);
         // ws.close();
       };
@@ -20,11 +20,15 @@ const sendData1 = (message) => {
       const receivedData = JSON.parse(event.data);
       toast.success(receivedData);
       console.log(receivedData);
+      // if()
       // ws.close();
     }
   };
   ws.onerror = (error) => {
     console.log("Websocket error:", error);
+  };
+  ws.onclose = (event) => {
+    console.log("Websocket is closed  now", event);
   };
 };
 export default sendData1;
